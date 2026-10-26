@@ -1,9 +1,17 @@
-FROM python:latest
+FROM python:3.12-slim
 
 WORKDIR /app
 
-COPY . .
-RUN pip install -r requirements.txt
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-EXPOSE 8000
-CMD gunicorn --bind 127.0.0.1:8000 app:app
+COPY app.py .
+
+RUN useradd --create-home --shell /bin/bash app \
+    && chown -R app:app /app
+
+USER app
+
+EXPOSE 8003
+
+CMD ["gunicorn", "--bind", "0.0.0.0:8003", "app:app"]
