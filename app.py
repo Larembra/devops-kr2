@@ -1,3 +1,5 @@
+# KR2: Samonchev
+
 import os
 import socket
 
